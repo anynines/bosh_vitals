@@ -1,7 +1,11 @@
 con = BoshVitals::Bosh::Connection.new
 con.login
-ch = BoshVitals::Bosh::VitalChecker.new con
-ch.get_deployment_names
-ch.fetch_vitals_record
+fet = BoshVitals::Bosh::VitalFetcher.new con
+fet.get_deployment_names
+vitals_records = fet.fetch_vitals_record
 
-ch.deployment "anynines-staging"
+# fetch a single deployments vm vitals
+# fet.deployment "anynines-staging"
+
+checker = BoshVitals::Checkers::VmVitalsChecker.new
+checker.check_all vitals_records[:vitals]; nil

@@ -22,4 +22,12 @@ class BoshVitals::Models::VmVitals
     :disk_ephemeral_percent,
     :disk_persistent_percent,
     :disk_system_percent
+
+  def to_s
+    str = "VMVitals: "
+    self.instance_variables.each do |ivar|
+      str += "#{ivar}: #{self.instance_variable_get(ivar)}; "
+    end
+    str
+  end
 end
