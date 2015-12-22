@@ -27,7 +27,7 @@ class BoshVitals::Bosh::Connection
   end
 
   def login
-    BoshVitals.logger.info "Logging in to ##{self.base_uri} with user #{self.username}"
+    BoshVitals.logger.info "Logging in to #{self.base_uri} with user #{self.username}"
     ret = system("bosh target #{self.base_uri}")
     raise "Setting target to #{self.base_uri} failed!" unless ret
     ret = system("bosh login #{self.username} #{self.password}")
