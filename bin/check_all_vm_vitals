@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require 'pp'
+require 'bosh_vitals'
+
+begin
+  con = BoshVitals::Bosh::Connection.new
+  con.login
+
+  fet = BoshVitals::Bosh::VitalFetcher.new con
+  fet.get_deployment_names
+  vitals_records = fet.fetch_vitals_record
+
+  checker = BoshVitals::Checkers::VmVitalsChecker.new
+  check_result = checker.check_all vitals_records[:vitals]
+
+  puts "*" * 20
+  puts 'Results:'
+  puts "*" * 20
+  puts "Warnings:"
+  checker.warnings.each { |w| pp w }
+  puts "*" * 20
+  puts "Alerts:"
+  checker.alerts.each { |w| pp w }
+  puts "*" * 20
+
+  exit 0 if check_result
+  exit -1
+rescue => err
+  BoshVitals.logger.error err.inspect
+  raise err
+end

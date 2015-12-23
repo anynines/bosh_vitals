@@ -11,30 +11,29 @@ class BoshVitals::Checkers::VmVitalsChecker
   end
 
   def check(vm_vitals)
-    ret = true
-    ret = check_state(vm_vitals)
-    ret = check_persistent_disk(vm_vitals,
+    ret_state = check_state(vm_vitals)
+    ret_pers = check_persistent_disk(vm_vitals,
       self.configuration.warning_persistent_disk_percentage,
       self.configuration.alert_persistent_disk_percentage)
-    ret = check_system_disk(vm_vitals,
+    ret_sys = check_system_disk(vm_vitals,
       self.configuration.warning_system_disk_percentage,
       self.configuration.alert_system_disk_percentage)
-    ret = check_ephemeral_disk(vm_vitals,
+    ret_eph = check_ephemeral_disk(vm_vitals,
       self.configuration.warning_ephemeral_disk_percentage,
       self.configuration.alert_ephemeral_disk_percentage)
-    ret = check_mem(vm_vitals,
+    ret_mem = check_mem(vm_vitals,
       self.configuration.warning_mem_percentage,
       self.configuration.alert_mem_percentage)
-    ret = check_swap(vm_vitals,
+    ret_swap = check_swap(vm_vitals,
       self.configuration.warning_swap_percentage,
       self.configuration.alert_swap_percentage)
-    ret
+    ret_state && ret_pers && ret_sys && ret_eph && ret_mem && ret_swap
   end
 
   def check_all(vitals_array)
     ret = true
     vitals_array.each do |vit|
-      ret = check(vit)
+      ret = check(vit) if ret == true
     end
     ret
   end
@@ -77,11 +76,11 @@ class BoshVitals::Checkers::VmVitalsChecker
   def check_persistent_disk(vm_vitals, warning_threshold, alert_threshold)
     ret = true
     msg = "[DISK] A job's PERSISTENT disk is running out of space - #{vm_vitals.disk_persistent_percent} % are in use : #{vm_vitals}"
-    if vm_vitals.disk_persistent_percent.to_i > alert_threshold
+    if vm_vitals.disk_persistent_percent.to_i > alert_threshold.to_i
       alert_error msg
       @alerts << msg
       ret = false
-    elsif vm_vitals.disk_persistent_percent.to_i > warning_threshold
+    elsif vm_vitals.disk_persistent_percent.to_i > warning_threshold.to_i
       alert_warning msg
       warnings << msg
       ret = false
@@ -92,11 +91,11 @@ class BoshVitals::Checkers::VmVitalsChecker
   def check_system_disk(vm_vitals, warning_threshold, alert_threshold)
     ret = true
     msg = "[DISK] A job's SYSTEM disk is running out of space - #{vm_vitals.disk_system_percent} % are in use : #{vm_vitals}"
-    if vm_vitals.disk_system_percent.to_i > alert_threshold
+    if vm_vitals.disk_system_percent.to_i > alert_threshold.to_i
       alert_error msg
       @alerts << msg
       ret = false
-    elsif vm_vitals.disk_system_percent.to_i > warning_threshold
+    elsif vm_vitals.disk_system_percent.to_i > warning_threshold.to_i
       alert_warning msg
       warnings << msg
       ret = false
@@ -107,11 +106,11 @@ class BoshVitals::Checkers::VmVitalsChecker
   def check_ephemeral_disk(vm_vitals, warning_threshold, alert_threshold)
     ret = true
     msg = "[DISK] A job's EPHEMERAL disk is running out of space - #{vm_vitals.disk_ephemeral_percent} % are in use : #{vm_vitals}"
-    if vm_vitals.disk_ephemeral_percent.to_i > alert_threshold
+    if vm_vitals.disk_ephemeral_percent.to_i > alert_threshold.to_i
       alert_error msg
       @alerts << msg
       ret = false
-    elsif vm_vitals.disk_ephemeral_percent.to_i > warning_threshold
+    elsif vm_vitals.disk_ephemeral_percent.to_i > warning_threshold.to_i
       alert_warning msg
       warnings << msg
       ret = false
@@ -122,11 +121,11 @@ class BoshVitals::Checkers::VmVitalsChecker
   def check_mem(vm_vitals, warning_threshold, alert_threshold)
     ret = true
     msg = "[MEM] A job's MEMORY is growing too large - #{vm_vitals.mem_percent} % are in use : #{vm_vitals}"
-    if vm_vitals.mem_percent.to_i > alert_threshold
+    if vm_vitals.mem_percent.to_i > alert_threshold.to_i
       alert_error msg
       @alerts << msg
       ret = false
-    elsif vm_vitals.mem_percent.to_i > warning_threshold
+    elsif vm_vitals.mem_percent.to_i > warning_threshold.to_i
       alert_warning msg
       warnings << msg
       ret = false
@@ -137,11 +136,11 @@ class BoshVitals::Checkers::VmVitalsChecker
   def check_swap(vm_vitals, warning_threshold, alert_threshold)
     ret = true
     msg = "[SWAP] A job's SWAP is growing too large - #{vm_vitals.swap_percent} % are in use : #{vm_vitals}"
-    if vm_vitals.swap_percent.to_i > alert_threshold
+    if vm_vitals.swap_percent.to_i > alert_threshold.to_i
       alert_error msg
       @alerts << msg
       ret = false
-    elsif vm_vitals.swap_percent.to_i > warning_threshold
+    elsif vm_vitals.swap_percent.to_i > warning_threshold.to_i
       alert_warning msg
       warnings << msg
       ret = false
