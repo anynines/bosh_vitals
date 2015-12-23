@@ -23,5 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-byebug"
   spec.add_dependency "httparty"
-  spec.add_dependency "bosh_cli"
+  spec.add_dependency "bosh_cli", "~> 1.2915.0"
 end
