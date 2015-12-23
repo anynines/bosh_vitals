@@ -24,9 +24,8 @@ begin
   checker.alerts.each { |w| pp w }
   puts "*" * 20
 
-  exit 0 if check_result
-  exit -1
+  exit check_result
 rescue => err
   BoshVitals.logger.error err.inspect
-  raise err
+  exit -1
 end
