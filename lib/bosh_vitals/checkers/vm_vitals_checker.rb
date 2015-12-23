@@ -66,7 +66,7 @@ class BoshVitals::Checkers::VmVitalsChecker
     msg = "[STATE] A job is not in running state: #{vm_vitals}"
     if vm_vitals.state != "running"
       alert_warning msg
-      @alerts << msg
+      @warnings << msg
       ret = 1
     end
     return ret
