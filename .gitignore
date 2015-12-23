@@ -13,4 +13,5 @@
 *.a
 mkmf.log
 
-bin/set_live_environment.sh
+bin/environments/*
+!bin/environments/.gitkeep
