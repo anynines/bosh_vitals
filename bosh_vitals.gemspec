@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   spec.name          = "bosh_vitals"
   spec.version       = BoshVitals::VERSION
   spec.authors       = ["Julian Weber"]
-  spec.email         = ["jweber@avarteq.de"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.email         = ["jweber@anynines.com"]
+  spec.summary       = %q{bosh_vitals is a library to acces bosh vitals information from a BOSH director and perform custom health checks on it.}
+  spec.description   = %q{bosh_vitals is a library to acces bosh vitals information from a BOSH director and perform custom health checks on it.}
+  spec.homepage      = "http://www.github.com/anynines/bosh_vitals"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
