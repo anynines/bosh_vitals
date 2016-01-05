@@ -10,7 +10,8 @@ class BoshVitals::Checkers::VmVitalsChecker
     @alerts = Array.new
   end
 
-  def check(vm_vitals)
+  def check(vm_vitals , opts = {})
+    vm_vitals = filter_vitals(vm_vitals, opts)
     ret_state = check_state(vm_vitals)
     ret_pers = check_persistent_disk(vm_vitals,
       self.configuration.warning_persistent_disk_percentage,
@@ -59,6 +60,12 @@ class BoshVitals::Checkers::VmVitalsChecker
   end
 
   protected
+
+  def filter_vitals(vm_vitals, opts)
+    # exclude : filter_vitals(vm_vitals, { exclude_jobs: ['dea_avl1'] })
+    # TODO: Implement filtering
+    vm_vitals
+  end
 
   # Checks
   def check_state(vm_vitals)
